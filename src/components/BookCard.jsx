@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { useBooks } from '../context/BookContext'
+import UpdateProgressModal from './UpdateProgressModal'
 
 function BookCard({ book }) {
   const { deleteBook, toggleFavorite } = useBooks()
+  const [showProgress, setShowProgress] = useState(false)
 
   const progressPercent = book.pageCount > 0
     ? Math.round((book.pagesRead / book.pageCount) * 100)
@@ -63,14 +66,29 @@ function BookCard({ book }) {
           </div>
         </div>
 
-        <button
-          onClick={() => deleteBook(book.id)}
-          aria-label={`Delete ${book.title}`}
-          className="mt-3 text-xs text-red-500 hover:text-red-700"
-        >
-          Delete
-        </button>
+        <div className="flex gap-3 mt-3">
+          <button
+            onClick={() => setShowProgress(true)}
+            className="text-xs text-indigo-600 hover:text-indigo-800"
+          >
+            Update Progress
+          </button>
+          <button
+            onClick={() => deleteBook(book.id)}
+            aria-label={`Delete ${book.title}`}
+            className="text-xs text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
+        </div>
       </div>
+
+      {showProgress && (
+        <UpdateProgressModal
+          book={book}
+          onClose={() => setShowProgress(false)}
+        />
+      )}
     </div>
   )
 }
