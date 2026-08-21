@@ -3,6 +3,7 @@ import { useBooks } from '../context/BookContext'
 import BookList from '../components/BookList'
 import AddBookForm from '../components/AddBookForm'
 import { STATUSES, GENRES } from '../utils/bookSchema'
+import ReadingGoal from '../components/ReadingGoal'
 
 function Home() {
   const { books } = useBooks()
@@ -30,6 +31,10 @@ function Home() {
 
   return (
     <div>
+      return (
+  <div>
+    <ReadingGoal />
+    <div className="flex justify-between items-center mb-6"></div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">
           My Books
