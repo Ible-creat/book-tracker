@@ -10,6 +10,7 @@ function Home() {
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
   const [filterGenre, setFilterGenre] = useState('all')
+  const [sortBy, setSortBy] = useState('dateAdded')
 
   const filteredBooks = books
     .filter((b) => filterStatus === 'all' || b.status === filterStatus)
@@ -18,6 +19,14 @@ function Home() {
       b.title.toLowerCase().includes(search.toLowerCase()) ||
       b.author.toLowerCase().includes(search.toLowerCase())
     )
+    .sort((a, b) => {
+      if (sortBy === 'title') return a.title.localeCompare(b.title)
+      if (sortBy === 'author') return a.author.localeCompare(b.author)
+      if (sortBy === 'progress') return (
+        (b.pagesRead / b.pageCount) - (a.pagesRead / a.pageCount)
+      )
+      return new Date(b.dateAdded) - new Date(a.dateAdded)
+    })
 
   return (
     <div>
@@ -71,6 +80,16 @@ function Home() {
             {GENRES.map((g) => (
               <option key={g} value={g}>{g}</option>
             ))}
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+            <option value="dateAdded">Recently Added</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="progress">Progress</option>
           </select>
         </div>
       </div>
